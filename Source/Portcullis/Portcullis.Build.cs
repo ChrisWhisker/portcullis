@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class DungeonGenerator : ModuleRules
+public class Portcullis : ModuleRules
 {
-	public DungeonGenerator(ReadOnlyTargetRules Target) : base(Target)
+	public Portcullis(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		

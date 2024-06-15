@@ -2,21 +2,21 @@
 	"FileVersion": 3,
 	"Version": 1,
 	"VersionName": "1.0",
-	"FriendlyName": "DungeonGenerator",
-	"Description": "",
+	"FriendlyName": "Portcullis",
+	"Description": "Portcullis Dungeon Generator",
 	"Category": "Other",
-	"CreatedBy": "",
-	"CreatedByURL": "",
+	"CreatedBy": "Chris Worcester",
+	"CreatedByURL": "https://github.com/ChrisWhisker",
 	"DocsURL": "",
 	"MarketplaceURL": "",
 	"SupportURL": "",
 	"CanContainContent": false,
-	"IsBetaVersion": false,
+	"IsBetaVersion": true,
 	"IsExperimentalVersion": false,
 	"Installed": false,
 	"Modules": [
 		{
-			"Name": "DungeonGenerator",
+			"Name": "Portcullis",
 			"Type": "Editor",
 			"LoadingPhase": "Default"
 		}

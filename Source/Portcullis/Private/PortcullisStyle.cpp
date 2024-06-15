@@ -1,6 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "DungeonGeneratorStyle.h"
+#include "PortcullisStyle.h"
 #include "Styling/SlateStyleRegistry.h"
 #include "Framework/Application/SlateApplication.h"
 #include "Slate/SlateGameResources.h"
@@ -9,9 +9,9 @@
 
 #define RootToContentDir Style->RootToContentDir
 
-TSharedPtr<FSlateStyleSet> FDungeonGeneratorStyle::StyleInstance = nullptr;
+TSharedPtr<FSlateStyleSet> FPortcullisStyle::StyleInstance = nullptr;
 
-void FDungeonGeneratorStyle::Initialize()
+void FPortcullisStyle::Initialize()
 {
 	if (!StyleInstance.IsValid())
 	{
@@ -20,33 +20,33 @@ void FDungeonGeneratorStyle::Initialize()
 	}
 }
 
-void FDungeonGeneratorStyle::Shutdown()
+void FPortcullisStyle::Shutdown()
 {
 	FSlateStyleRegistry::UnRegisterSlateStyle(*StyleInstance);
 	ensure(StyleInstance.IsUnique());
 	StyleInstance.Reset();
 }
 
-FName FDungeonGeneratorStyle::GetStyleSetName()
+FName FPortcullisStyle::GetStyleSetName()
 {
-	static FName StyleSetName(TEXT("DungeonGeneratorStyle"));
+	static FName StyleSetName(TEXT("PortcullisStyle"));
 	return StyleSetName;
 }
 
 const FVector2D Icon16x16(16.0f, 16.0f);
 const FVector2D Icon20x20(20.0f, 20.0f);
 
-TSharedRef< FSlateStyleSet > FDungeonGeneratorStyle::Create()
+TSharedRef< FSlateStyleSet > FPortcullisStyle::Create()
 {
-	TSharedRef< FSlateStyleSet > Style = MakeShareable(new FSlateStyleSet("DungeonGeneratorStyle"));
-	Style->SetContentRoot(IPluginManager::Get().FindPlugin("DungeonGenerator")->GetBaseDir() / TEXT("Resources"));
+	TSharedRef< FSlateStyleSet > Style = MakeShareable(new FSlateStyleSet("PortcullisStyle"));
+	Style->SetContentRoot(IPluginManager::Get().FindPlugin("Portcullis")->GetBaseDir() / TEXT("Resources"));
 
-	Style->Set("DungeonGenerator.OpenPluginWindow", new IMAGE_BRUSH_SVG(TEXT("PlaceholderButtonIcon"), Icon20x20));
+	Style->Set("Portcullis.OpenPluginWindow", new IMAGE_BRUSH_SVG(TEXT("PlaceholderButtonIcon"), Icon20x20));
 
 	return Style;
 }
 
-void FDungeonGeneratorStyle::ReloadTextures()
+void FPortcullisStyle::ReloadTextures()
 {
 	if (FSlateApplication::IsInitialized())
 	{
@@ -54,7 +54,7 @@ void FDungeonGeneratorStyle::ReloadTextures()
 	}
 }
 
-const ISlateStyle& FDungeonGeneratorStyle::Get()
+const ISlateStyle& FPortcullisStyle::Get()
 {
 	return *StyleInstance;
 }
