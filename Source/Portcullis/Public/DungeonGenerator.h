@@ -10,7 +10,6 @@
 class PORTCULLIS_API DungeonGenerator
 {
 public:
-	DungeonGenerator();
 	virtual ~DungeonGenerator();
 
 	virtual void Generate() = 0;

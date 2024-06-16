@@ -5,9 +5,9 @@
 #include "CoreMinimal.h"
 #include "DungeonGenerator.h"
 
-struct Rect
+struct FRect
 {
-	int x, y, width, height;
+	int X, Y, Width, Height;
 };
 
 /**
@@ -16,11 +16,8 @@ struct Rect
 class PORTCULLIS_API BSPGenerator : DungeonGenerator
 {
 public:
-	BSPGenerator();
-	virtual ~BSPGenerator() override;
-
 	virtual void Generate() override;
 
 private:
-	void divideSpace(std::vector<Rect>& spaces, int depth, int maxDepth);
+	static void DivideSpace(std::vector<FRect>& Spaces, int Depth, int MaxDepth);
 };

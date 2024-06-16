@@ -93,8 +93,8 @@ TSharedRef<SDockTab> FPortcullisModule::OnSpawnPluginTab(const FSpawnTabArgs& Sp
 FReply FPortcullisModule::OnButtonClick()
 {
     UE_LOG(LogTemp, Warning, TEXT("Generate button was clicked!"));
-	BSPGenerator bspGen;
-	bspGen.Generate();
+	BSPGenerator BSPGen;
+	BSPGen.Generate();
     return FReply::Handled();
 }
 

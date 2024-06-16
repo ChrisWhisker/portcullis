@@ -3,68 +3,58 @@
 
 #include "BSPGenerator.h"
 
-#include <iostream>
-#include <random>
-
-BSPGenerator::BSPGenerator()
-{
-}
-
-BSPGenerator::~BSPGenerator()
-{
-}
-
 void BSPGenerator::Generate()
 {
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
 	// Define the initial space
-	Rect initialSpace = {0, 0, 100, 100};
-	std::vector<Rect> spaces = {initialSpace}; // Use initializer list to initialize the vector
+	constexpr FRect InitialSpace = {0, 0, 100, 100};
+	std::vector<FRect> Spaces = {InitialSpace}; // Use initializer list to initialize the vector
 
 	// Recursively divide the space to a certain depth
-	int maxDepth = 4;
-	divideSpace(spaces, 0, maxDepth);
+	constexpr int MaxDepth = 4;
+	DivideSpace(Spaces, 0, MaxDepth);
 
 	// Output the resulting spaces
-	for (const auto& space : spaces)
+	for (const auto& [X, Y, Width, Height] : Spaces)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Rect: x=%d, y=%d, width=%d, height=%d"), space.x, space.y, space.width, space.height);
-		std::cout << "Rect: x=" << space.x << ", y=" << space.y
-			<< ", width=" << space.width << ", height=" << space.height << std::endl;
+		UE_LOG(LogTemp, Log, TEXT("FRect: x=%d, y=%d, width=%d, height=%d"), X, Y, Width,Height);
 	}
 }
 
-void BSPGenerator::divideSpace(std::vector<Rect>& spaces, int depth, int maxDepth)
+void BSPGenerator::DivideSpace(std::vector<FRect>& Spaces, int Depth, int MaxDepth)
 {
-	if (depth >= maxDepth) return;
+	if (Depth >= MaxDepth) return;
 
-	std::vector<Rect> newSpaces;
-	for (const auto& space : spaces) {
-		bool divideHorizontally = static_cast<bool>(std::rand() % 2);
-
-		if (divideHorizontally) {
-			int split = 1; // Default split value to avoid division by zero
-			if (space.height > 1) {
-				split = space.y + std::rand() % (space.height - 1) + 1;
+	std::vector<FRect> NewSpaces;
+	for (const auto& [x, y, width, height] : Spaces)
+	{
+		if (static_cast<bool>(std::rand() % 2)) // Divide horizontally
+		{
+			int Split = 1; // Default split value to avoid division by zero
+			if (height > 1)
+			{
+				Split = y + std::rand() % (height - 1) + 1;
 			}
-			Rect top = {space.x, space.y, space.width, split - space.y};
-			Rect bottom = {space.x, split, space.width, space.y + space.height - split};
-			newSpaces.push_back(top);
-			newSpaces.push_back(bottom);
-		} else {
-			int split = 1; // Default split value to avoid division by zero
-			if (space.width > 1) {
-				split = space.x + std::rand() % (space.width - 1) + 1;
+			FRect Top = {x, y, width, Split - y};
+			FRect Bottom = {x, Split, width, y + height - Split};
+			NewSpaces.push_back(Top);
+			NewSpaces.push_back(Bottom);
+		}
+		else
+		{
+			int Split = 1; // Default split value to avoid division by zero
+			if (width > 1)
+			{
+				Split = x + std::rand() % (width - 1) + 1;
 			}
-			Rect left = {space.x, space.y, split - space.x, space.height};
-			Rect right = {split, space.y, space.x + space.width - split, space.height};
-			newSpaces.push_back(left);
-			newSpaces.push_back(right);
+			FRect Left = {x, y, Split - x, height};
+			FRect Right = {Split, y, x + width - Split, height};
+			NewSpaces.push_back(Left);
+			NewSpaces.push_back(Right);
 		}
 	}
-	spaces = newSpaces;
+	Spaces = NewSpaces;
 
-	divideSpace(spaces, depth + 1, maxDepth);
-
+	DivideSpace(Spaces, Depth + 1, MaxDepth);
 }
