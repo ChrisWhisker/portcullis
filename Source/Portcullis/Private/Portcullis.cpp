@@ -1,13 +1,15 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Portcullis.h"
+
+#include "BSPGenerator.h"
 #include "PortcullisStyle.h"
 #include "PortcullisCommands.h"
 #include "LevelEditor.h"
 #include "Widgets/Docking/SDockTab.h"
 #include "Widgets/Layout/SBox.h"
 #include "Widgets/Text/STextBlock.h"
-#include "Widgets/Input/SButton.h" // Include for button
+#include "Widgets/Input/SButton.h"
 #include "ToolMenus.h"
 
 static const FName PortcullisTabName("Portcullis");
@@ -91,6 +93,8 @@ TSharedRef<SDockTab> FPortcullisModule::OnSpawnPluginTab(const FSpawnTabArgs& Sp
 FReply FPortcullisModule::OnButtonClick()
 {
     UE_LOG(LogTemp, Warning, TEXT("Generate button was clicked!"));
+	BSPGenerator bspGen;
+	bspGen.Generate();
     return FReply::Handled();
 }
 
