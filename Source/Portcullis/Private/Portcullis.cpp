@@ -19,12 +19,12 @@ static const FName PortcullisTabName("Portcullis");
 void FPortcullisModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
-	
+
 	FPortcullisStyle::Initialize();
 	FPortcullisStyle::ReloadTextures();
 
 	FPortcullisCommands::Register();
-	
+
 	PluginCommands = MakeShareable(new FUICommandList);
 
 	PluginCommands->MapAction(
@@ -32,29 +32,35 @@ void FPortcullisModule::StartupModule()
 		FExecuteAction::CreateRaw(this, &FPortcullisModule::PluginButtonClicked),
 		FCanExecuteAction());
 
-	UToolMenus::RegisterStartupCallback(FSimpleMulticastDelegate::FDelegate::CreateRaw(this, &FPortcullisModule::RegisterMenus));
-	
-	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(PortcullisTabName, FOnSpawnTab::CreateRaw(this, &FPortcullisModule::OnSpawnPluginTab))
-		.SetDisplayName(LOCTEXT("FPortcullisTabTitle", "Portcullis"))
-		.SetMenuType(ETabSpawnerMenuType::Hidden);
+	UToolMenus::RegisterStartupCallback(
+		FSimpleMulticastDelegate::FDelegate::CreateRaw(this, &FPortcullisModule::RegisterMenus));
 
-    FPortcullisStyle::Initialize();
-    FPortcullisStyle::ReloadTextures();
+	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(PortcullisTabName,
+	                                                  FOnSpawnTab::CreateRaw(
+		                                                  this, &FPortcullisModule::OnSpawnPluginTab))
+	                        .SetDisplayName(LOCTEXT("FPortcullisTabTitle", "Portcullis"))
+	                        .SetMenuType(ETabSpawnerMenuType::Hidden);
 
-    FPortcullisCommands::Register();
+	FPortcullisStyle::Initialize();
+	FPortcullisStyle::ReloadTextures();
 
-    PluginCommands = MakeShareable(new FUICommandList);
+	FPortcullisCommands::Register();
 
-    PluginCommands->MapAction(
-        FPortcullisCommands::Get().OpenPluginWindow,
-        FExecuteAction::CreateRaw(this, &FPortcullisModule::PluginButtonClicked),
-        FCanExecuteAction());
+	PluginCommands = MakeShareable(new FUICommandList);
 
-    UToolMenus::RegisterStartupCallback(FSimpleMulticastDelegate::FDelegate::CreateRaw(this, &FPortcullisModule::RegisterMenus));
+	PluginCommands->MapAction(
+		FPortcullisCommands::Get().OpenPluginWindow,
+		FExecuteAction::CreateRaw(this, &FPortcullisModule::PluginButtonClicked),
+		FCanExecuteAction());
 
-    FGlobalTabmanager::Get()->RegisterNomadTabSpawner(PortcullisTabName, FOnSpawnTab::CreateRaw(this, &FPortcullisModule::OnSpawnPluginTab))
-        .SetDisplayName(LOCTEXT("FPortcullisTabTitle", "Portcullis"))
-        .SetMenuType(ETabSpawnerMenuType::Hidden);
+	UToolMenus::RegisterStartupCallback(
+		FSimpleMulticastDelegate::FDelegate::CreateRaw(this, &FPortcullisModule::RegisterMenus));
+
+	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(PortcullisTabName,
+	                                                  FOnSpawnTab::CreateRaw(
+		                                                  this, &FPortcullisModule::OnSpawnPluginTab))
+	                        .SetDisplayName(LOCTEXT("FPortcullisTabTitle", "Portcullis"))
+	                        .SetMenuType(ETabSpawnerMenuType::Hidden);
 }
 
 void FPortcullisModule::ShutdownModule()
@@ -75,27 +81,39 @@ void FPortcullisModule::ShutdownModule()
 
 TSharedRef<SDockTab> FPortcullisModule::OnSpawnPluginTab(const FSpawnTabArgs& SpawnTabArgs)
 {
-    return SNew(SDockTab)
-        .TabRole(ETabRole::NomadTab)
-        [
-            // Put your tab content here!
-            SNew(SBox)
+	return SNew(SDockTab)
+		.TabRole(ETabRole::NomadTab)
+		[
+			// Put your tab content here!
+			SNew(SBox)
             .HAlign(HAlign_Center)
             .VAlign(VAlign_Center)
-            [
-	            SNew(SButton)
+			[
+				SNew(SButton)
 	            .Text(LOCTEXT("MyButtonLabel", "Generate"))
 	            .OnClicked_Raw(this, &FPortcullisModule::OnButtonClick) // Bind the button click event
-            ]
-        ];
+			]
+		];
 }
 
 FReply FPortcullisModule::OnButtonClick()
 {
-    UE_LOG(LogTemp, Warning, TEXT("Generate button was clicked!"));
-	BSPGenerator BSPGen;
-	BSPGen.Generate();
-    return FReply::Handled();
+	UE_LOG(LogTemp, Warning, TEXT("Generate button was clicked!"));
+
+	if (UWorld* World = GEditor->GetEditorWorldContext().World())
+	{
+		// Instantiate BSPGenerator with the current world context
+		BSPGenerator BSPGen;
+		BSPGen.Initialize(World);
+
+		// Now you can call Generate or other functions as needed
+		BSPGen.Generate();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Failed to get valid world context."));
+	}
+	return FReply::Handled();
 }
 
 void FPortcullisModule::PluginButtonClicked()
@@ -121,7 +139,8 @@ void FPortcullisModule::RegisterMenus()
 		{
 			FToolMenuSection& Section = ToolbarMenu->FindOrAddSection("Settings");
 			{
-				FToolMenuEntry& Entry = Section.AddEntry(FToolMenuEntry::InitToolBarButton(FPortcullisCommands::Get().OpenPluginWindow));
+				FToolMenuEntry& Entry = Section.AddEntry(
+					FToolMenuEntry::InitToolBarButton(FPortcullisCommands::Get().OpenPluginWindow));
 				Entry.SetCommandList(PluginCommands);
 			}
 		}
@@ -129,5 +148,5 @@ void FPortcullisModule::RegisterMenus()
 }
 
 #undef LOCTEXT_NAMESPACE
-	
+
 IMPLEMENT_MODULE(FPortcullisModule, Portcullis)
