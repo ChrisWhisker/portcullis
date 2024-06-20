@@ -86,19 +86,20 @@ void BSPGenerator::DrawDebugRect(const FRect& Rect) const
 	const FVector BottomRight = Center + FVector(Extent.X, Extent.Y, 0.f);
 
 	// Draw lines to represent the edges of the rectangle
-	DrawLine(TopLeft, TopRight);
-	DrawLine(TopRight, BottomRight);
-	DrawLine(BottomRight, BottomLeft);
-	DrawLine(BottomLeft, TopLeft);
+	const FColor Color = FColor::MakeRandomColor();
+	DrawLine(TopLeft, TopRight, Color);
+	DrawLine(TopRight, BottomRight, Color);
+	DrawLine(BottomRight, BottomLeft, Color);
+	DrawLine(BottomLeft, TopLeft, Color);
 }
 
-void BSPGenerator::DrawLine(const FVector& Start, const FVector& End) const
+void BSPGenerator::DrawLine(const FVector& Start, const FVector& End, const FColor Color) const
 {
 	DrawDebugLine(
 		World,
 		Start,
 		End,
-		FColor::Red,
+		Color,
 		false, 10, 0,
 		10.0f
 	);

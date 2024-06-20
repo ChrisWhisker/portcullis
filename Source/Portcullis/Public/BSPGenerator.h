@@ -26,5 +26,5 @@ private:
 
 	void DrawDebugRect(const FRect& Rect) const; // Updated function signature
 
-	void DrawLine(const FVector& Start, const FVector& End) const;
+	void DrawLine(const FVector& Start, const FVector& End, const FColor Color) const;
 };
