@@ -4,11 +4,6 @@
 #include "DungeonGenerator.h"
 #include "Engine/World.h"
 
-struct FRect
-{
-	int X, Y, Width, Height;
-};
-
 /**
  *
  */
@@ -20,11 +15,5 @@ public:
 	virtual void Generate() override;
 
 private:
-	UWorld* World = nullptr; // Member variable to hold UWorld pointer
-
 	static void DivideSpace(std::vector<FRect>& Spaces, int Depth, int MaxDepth);
-
-	void DrawDebugRect(const FRect& Rect) const; // Updated function signature
-
-	void DrawLine(const FVector& Start, const FVector& End, const FColor Color) const;
 };

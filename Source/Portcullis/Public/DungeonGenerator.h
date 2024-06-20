@@ -4,6 +4,11 @@
 
 #include "CoreMinimal.h"
 
+struct FRect
+{
+	int X, Y, Width, Height;
+};
+
 /**
  * 
  */
@@ -13,4 +18,11 @@ public:
 	virtual ~DungeonGenerator();
 
 	virtual void Generate() = 0;
+
+protected:
+	UWorld* World = nullptr;
+
+	void DrawDebugRect(const FRect& Rect) const;
+
+	void DrawLine(const FVector& Start, const FVector& End, const FColor Color) const;
 };
