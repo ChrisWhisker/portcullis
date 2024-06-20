@@ -1,6 +1,3 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-// Portcullis.h
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -13,7 +10,6 @@ class FMenuBuilder;
 class FPortcullisModule : public IModuleInterface
 {
 public:
-
 	/** IModuleInterface implementation */
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
@@ -21,10 +17,7 @@ public:
 	/** This function will be bound to Command (by default it will bring up plugin window) */
 	void PluginButtonClicked();
 
-
 private:
-
-
 	/** Registers the plugin menus. */
 	void RegisterMenus();
 
@@ -34,6 +27,5 @@ private:
 	/** Callback for button click event. */
 	FReply OnButtonClick();
 
-private:
 	TSharedPtr<class FUICommandList> PluginCommands;
 };

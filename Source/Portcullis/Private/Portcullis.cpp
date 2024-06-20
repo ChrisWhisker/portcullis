@@ -1,16 +1,14 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #include "Portcullis.h"
 
 #include "BSPGenerator.h"
-#include "PortcullisStyle.h"
-#include "PortcullisCommands.h"
 #include "LevelEditor.h"
+#include "PortcullisCommands.h"
+#include "PortcullisStyle.h"
+#include "ToolMenus.h"
 #include "Widgets/Docking/SDockTab.h"
+#include "Widgets/Input/SButton.h"
 #include "Widgets/Layout/SBox.h"
 #include "Widgets/Text/STextBlock.h"
-#include "Widgets/Input/SButton.h"
-#include "ToolMenus.h"
 
 static const FName PortcullisTabName("Portcullis");
 
