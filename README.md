@@ -1,4 +1,4 @@
-![portcullis-150](https://github.com/ChrisWhisker/portcullis/assets/6521800/46b65341-3ddb-41d2-bb32-aee7c253033c)
+![portcullis-150](https://github.com/ChrisWhisker/portcullis/assets/6521800/07d6f12e-096e-4771-b38c-84b4dd459828)
 # Portcullis: Procedural Dungeon Generator Plugin for Unreal Engine
 
 This Unreal Engine plugin is designed to procedurally generate randomized 3D dungeons for use in video games. The goal is to provide game developers with a flexible and powerful tool to create unique dungeon environments.
