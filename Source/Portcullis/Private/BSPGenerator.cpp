@@ -1,7 +1,7 @@
 #include "BSPGenerator.h"
-#include "DrawDebugHelpers.h"
 #include <cstdlib>
 #include <ctime>
+#include "DrawDebugHelpers.h"
 
 void BSPGenerator::Initialize(UWorld* InWorld)
 {
@@ -47,10 +47,10 @@ void BSPGenerator::DivideSpace(std::vector<FRect>& Spaces, const int Depth, cons
 	if (Depth >= MaxDepth) return;
 
 	std::vector<FRect> NewSpaces;
-	constexpr int MinSize = 300; // Minimum size for width and height
 
 	for (const auto& Rect : Spaces)
 	{
+		constexpr int MinSize = 300;
 		if (static_cast<bool>(std::rand() % 2)) // Divide horizontally
 		{
 			if (Rect.Height <= MinSize * 2) // Skip division if resulting spaces would be too small
@@ -58,7 +58,7 @@ void BSPGenerator::DivideSpace(std::vector<FRect>& Spaces, const int Depth, cons
 				NewSpaces.push_back(Rect);
 				continue;
 			}
-			int Split = Rect.Y + MinSize + std::rand() % (Rect.Height - MinSize * 2);
+			const int Split = Rect.Y + MinSize + std::rand() % (Rect.Height - MinSize * 2);
 			FRect Top = {Rect.X, Rect.Y, Rect.Width, Split - Rect.Y};
 			FRect Bottom = {Rect.X, Split, Rect.Width, Rect.Y + Rect.Height - Split};
 			NewSpaces.push_back(Top);
@@ -71,7 +71,7 @@ void BSPGenerator::DivideSpace(std::vector<FRect>& Spaces, const int Depth, cons
 				NewSpaces.push_back(Rect);
 				continue;
 			}
-			int Split = Rect.X + MinSize + std::rand() % (Rect.Width - MinSize * 2);
+			const int Split = Rect.X + MinSize + std::rand() % (Rect.Width - MinSize * 2);
 			FRect Left = {Rect.X, Rect.Y, Split - Rect.X, Rect.Height};
 			FRect Right = {Split, Rect.Y, Rect.X + Rect.Width - Split, Rect.Height};
 			NewSpaces.push_back(Left);

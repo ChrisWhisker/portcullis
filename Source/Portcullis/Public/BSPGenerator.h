@@ -1,10 +1,10 @@
 #pragma once
 
+#include <vector>
 #include "CoreMinimal.h"
 #include "DungeonGenerator.h"
+#include "Rect.h"
 #include "Engine/World.h"
-#include "FRect.h"
-#include <vector>
 
 /**
  *
