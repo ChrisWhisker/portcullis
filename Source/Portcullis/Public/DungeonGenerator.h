@@ -1,28 +1,22 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
-
-struct FRect
-{
-	int X, Y, Width, Height;
-};
+#include "Engine/World.h"
+#include "FRect.h"
 
 /**
- * 
+ *
  */
 class PORTCULLIS_API DungeonGenerator
 {
 public:
-	virtual ~DungeonGenerator();
-
+	virtual ~DungeonGenerator() = default;
+	virtual void Initialize(UWorld* InWorld);
 	virtual void Generate() = 0;
 
 protected:
-	UWorld* World = nullptr;
-
-	void DrawDebugRect(const FRect& Rect) const;
-
+	void DrawDebugRect(const FRect& Rect, FColor Color) const;
 	void DrawLine(const FVector& Start, const FVector& End, const FColor Color) const;
+
+	UWorld* World = nullptr; // World should be protected so derived classes can access it
 };
