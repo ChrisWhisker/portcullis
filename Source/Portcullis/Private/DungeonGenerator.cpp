@@ -15,24 +15,24 @@ void FDungeonGenerator::DrawDebugRect(const FRect& Rect, FColor Color = FColor::
 		return;
 	}
 
-	const FVector Center(Rect.X + Rect.Width * 0.5f, Rect.Y + Rect.Height * 0.5f, 0.f);
-	const FVector Extent(Rect.Width * 0.5f, Rect.Height * 0.5f, 0.f);
+	const FVector RectCenter(Rect.X + Rect.Width * 0.5f, Rect.Y + Rect.Height * 0.5f, 0.f);
+	const FVector RectExtent(Rect.Width * 0.5f, Rect.Height * 0.5f, 0.f);
 
 	// Calculate the corners of the rectangle
-	const FVector TopLeft = Center + FVector(-Extent.X, -Extent.Y, 0.f);
-	const FVector BottomLeft = Center + FVector(-Extent.X, Extent.Y, 0.f);
-	const FVector TopRight = Center + FVector(Extent.X, -Extent.Y, 0.f);
-	const FVector BottomRight = Center + FVector(Extent.X, Extent.Y, 0.f);
+	const FVector TopLeftCorner = RectCenter + FVector(-RectExtent.X, -RectExtent.Y, 0.f);
+	const FVector BottomLeftCorner = RectCenter + FVector(-RectExtent.X, RectExtent.Y, 0.f);
+	const FVector TopRightCorner = RectCenter + FVector(RectExtent.X, -RectExtent.Y, 0.f);
+	const FVector BottomRightCorner = RectCenter + FVector(RectExtent.X, RectExtent.Y, 0.f);
 
-	// Draw lines to represent the edges of the rectangle
 	if (Color == FColor::Transparent)
 	{
 		Color = Color.MakeRandomColor();
 	}
-	DrawLine(TopLeft, TopRight, Color, LineThickness);
-	DrawLine(TopRight, BottomRight, Color, LineThickness);
-	DrawLine(BottomRight, BottomLeft, Color, LineThickness);
-	DrawLine(BottomLeft, TopLeft, Color, LineThickness);
+	// Draw lines to represent the edges of the rectangle
+	DrawLine(TopLeftCorner, TopRightCorner, Color, LineThickness);
+	DrawLine(TopRightCorner, BottomRightCorner, Color, LineThickness);
+	DrawLine(BottomRightCorner, BottomLeftCorner, Color, LineThickness);
+	DrawLine(BottomLeftCorner, TopLeftCorner, Color, LineThickness);
 }
 
 void FDungeonGenerator::DrawLine(const FVector& Start, const FVector& End, const FColor Color,

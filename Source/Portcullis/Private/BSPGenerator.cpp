@@ -20,79 +20,78 @@ void FBSPGenerator::Generate()
 
 	// Define the initial space
 	const FRect InitialSpace = {0, 0, 10000, 10000};
-	std::vector<FRect> Spaces = {InitialSpace}; // Use initializer list to initialize the vector
+	std::vector<FRect> SubSpaces = {InitialSpace}; // Use initializer list to initialize the vector
 
 	// Recursively divide the space to a certain depth
 	FlushPersistentDebugLines(World);
 	constexpr int MaxDepth = 4;
-	DivideSpace(Spaces, 0, MaxDepth);
+	DivideSpace(SubSpaces, 0, MaxDepth);
 
-	for (const auto& Space : Spaces)
+	for (const auto& SubSpace : SubSpaces)
 	{
-		DrawDebugRect(Space, FColor::Silver);
+		DrawDebugRect(SubSpace, FColor::Silver);
 	}
 
 	// Create rooms in the divided spaces
-	CreateRooms(Spaces);
+	CreateRooms(SubSpaces);
 }
 
-void FBSPGenerator::DivideSpace(std::vector<FRect>& Spaces, const int Depth, const int MaxDepth)
+void FBSPGenerator::DivideSpace(std::vector<FRect>& SubSpaces, const int CurrentDepth, const int MaxDepth)
 {
-	if (Depth >= MaxDepth) return;
+	if (CurrentDepth >= MaxDepth) return;
 
-	std::vector<FRect> NewSpaces;
+	std::vector<FRect> NewSubSpaces;
 
-	for (const auto& Rect : Spaces)
+	for (const auto& SubSpace : SubSpaces)
 	{
 		constexpr int MinSize = 300;
 		if (static_cast<bool>(std::rand() % 2)) // Divide horizontally
 		{
-			if (Rect.Height <= MinSize * 2) // Skip division if resulting spaces would be too small
+			if (SubSpace.Height <= MinSize * 2) // Skip division if resulting spaces would be too small
 			{
-				NewSpaces.push_back(Rect);
+				NewSubSpaces.push_back(SubSpace);
 				continue;
 			}
-			const int Split = Rect.Y + MinSize + std::rand() % (Rect.Height - MinSize * 2);
-			FRect Top = {Rect.X, Rect.Y, Rect.Width, Split - Rect.Y};
-			FRect Bottom = {Rect.X, Split, Rect.Width, Rect.Y + Rect.Height - Split};
-			NewSpaces.push_back(Top);
-			NewSpaces.push_back(Bottom);
+			const int SplitLine = SubSpace.Y + MinSize + std::rand() % (SubSpace.Height - MinSize * 2);
+			FRect TopSpace = {SubSpace.X, SubSpace.Y, SubSpace.Width, SplitLine - SubSpace.Y};
+			FRect BottomSpace = {SubSpace.X, SplitLine, SubSpace.Width, SubSpace.Y + SubSpace.Height - SplitLine};
+			NewSubSpaces.push_back(TopSpace);
+			NewSubSpaces.push_back(BottomSpace);
 		}
 		else // Divide vertically
 		{
-			if (Rect.Width <= MinSize * 2) // Skip division if resulting spaces would be too small
+			if (SubSpace.Width <= MinSize * 2) // Skip division if resulting spaces would be too small
 			{
-				NewSpaces.push_back(Rect);
+				NewSubSpaces.push_back(SubSpace);
 				continue;
 			}
-			const int Split = Rect.X + MinSize + std::rand() % (Rect.Width - MinSize * 2);
-			FRect Left = {Rect.X, Rect.Y, Split - Rect.X, Rect.Height};
-			FRect Right = {Split, Rect.Y, Rect.X + Rect.Width - Split, Rect.Height};
-			NewSpaces.push_back(Left);
-			NewSpaces.push_back(Right);
+			const int SplitLine = SubSpace.X + MinSize + std::rand() % (SubSpace.Width - MinSize * 2);
+			FRect LeftSpace = {SubSpace.X, SubSpace.Y, SplitLine - SubSpace.X, SubSpace.Height};
+			FRect RightSpace = {SplitLine, SubSpace.Y, SubSpace.X + SubSpace.Width - SplitLine, SubSpace.Height};
+			NewSubSpaces.push_back(LeftSpace);
+			NewSubSpaces.push_back(RightSpace);
 		}
 	}
-	Spaces = NewSpaces;
+	SubSpaces = NewSubSpaces;
 
-	DivideSpace(Spaces, Depth + 1, MaxDepth);
+	DivideSpace(SubSpaces, CurrentDepth + 1, MaxDepth);
 }
 
-void FBSPGenerator::CreateRooms(const std::vector<FRect>& Spaces)
+void FBSPGenerator::CreateRooms(const std::vector<FRect>& SubSpaces)
 {
-	for (const auto& Space : Spaces)
+	for (const auto& SubSpace : SubSpaces)
 	{
 		// Randomize the room size with a margin and maximum size constraints
 		constexpr int32 RoomMargin = 10;
-		const int32 MaxRoomWidth = FMath::RandRange(1500, 5000);
-		const int32 MaxRoomHeight = FMath::RandRange(1500, 5000);
+		constexpr int32 MaxRoomSize = 1500;
 
-		const int32 RoomWidth = FMath::RandRange(FMath::Min(Space.Width / 2, MaxRoomWidth - RoomMargin),
-		                                         FMath::Min(Space.Width - RoomMargin, MaxRoomWidth));
-		const int32 RoomHeight = FMath::RandRange(FMath::Min(Space.Height / 2, MaxRoomHeight - RoomMargin),
-		                                          FMath::Min(Space.Height - RoomMargin, MaxRoomHeight));
+		const int32 RoomWidth = FMath::RandRange(FMath::Min(SubSpace.Width / 2, MaxRoomSize - RoomMargin),
+		                                         FMath::Min(SubSpace.Width - RoomMargin, MaxRoomSize));
+		const int32 RoomHeight = FMath::RandRange(FMath::Min(SubSpace.Height / 2, MaxRoomSize - RoomMargin),
+		                                          FMath::Min(SubSpace.Height - RoomMargin, MaxRoomSize));
 
-		const int32 RoomX = Space.X + FMath::RandRange(0, Space.Width - RoomWidth);
-		const int32 RoomY = Space.Y + FMath::RandRange(0, Space.Height - RoomHeight);
+		const int32 RoomX = SubSpace.X + FMath::RandRange(0, SubSpace.Width - RoomWidth);
+		const int32 RoomY = SubSpace.Y + FMath::RandRange(0, SubSpace.Height - RoomHeight);
 
 		FRect Room(RoomX, RoomY, RoomWidth, RoomHeight);
 		Rooms.push_back(Room);

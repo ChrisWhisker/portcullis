@@ -16,8 +16,7 @@ public:
 	virtual void Generate() override;
 
 private:
+	std::vector<FRect> Rooms;
 	static void DivideSpace(std::vector<FRect>& Spaces, int Depth, int MaxDepth);
 	void CreateRooms(const std::vector<FRect>& Spaces);
-
-	std::vector<FRect> Rooms;
 };
