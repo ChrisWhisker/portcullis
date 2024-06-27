@@ -3,12 +3,12 @@
 #include <ctime>
 #include "DrawDebugHelpers.h"
 
-void BSPGenerator::Initialize(UWorld* InWorld)
+void FBSPGenerator::Initialize(UWorld* InWorld)
 {
-	DungeonGenerator::Initialize(InWorld); // Call base class Initialize to set the World
+	FDungeonGenerator::Initialize(InWorld); // Call base class Initialize to set the World
 }
 
-void BSPGenerator::Generate()
+void FBSPGenerator::Generate()
 {
 	if (!World)
 	{
@@ -34,15 +34,9 @@ void BSPGenerator::Generate()
 
 	// Create rooms in the divided spaces
 	CreateRooms(Spaces);
-
-	// Output the resulting rooms
-	for (const auto& Room : Rooms)
-	{
-		UE_LOG(LogTemp, Log, TEXT("Room: x=%d, y=%d, width=%d, height=%d"), Room.X, Room.Y, Room.Width, Room.Height);
-	}
 }
 
-void BSPGenerator::DivideSpace(std::vector<FRect>& Spaces, const int Depth, const int MaxDepth)
+void FBSPGenerator::DivideSpace(std::vector<FRect>& Spaces, const int Depth, const int MaxDepth)
 {
 	if (Depth >= MaxDepth) return;
 
@@ -83,14 +77,14 @@ void BSPGenerator::DivideSpace(std::vector<FRect>& Spaces, const int Depth, cons
 	DivideSpace(Spaces, Depth + 1, MaxDepth);
 }
 
-void BSPGenerator::CreateRooms(const std::vector<FRect>& Spaces)
+void FBSPGenerator::CreateRooms(const std::vector<FRect>& Spaces)
 {
 	for (const auto& Space : Spaces)
 	{
 		// Randomize the room size with a margin and maximum size constraints
 		constexpr int32 RoomMargin = 10;
-		const int32 MaxRoomWidth = FMath::RandRange(1500,5000);
-		const int32 MaxRoomHeight = FMath::RandRange(1500,5000);
+		const int32 MaxRoomWidth = FMath::RandRange(1500, 5000);
+		const int32 MaxRoomHeight = FMath::RandRange(1500, 5000);
 
 		const int32 RoomWidth = FMath::RandRange(FMath::Min(Space.Width / 2, MaxRoomWidth - RoomMargin),
 		                                         FMath::Min(Space.Width - RoomMargin, MaxRoomWidth));

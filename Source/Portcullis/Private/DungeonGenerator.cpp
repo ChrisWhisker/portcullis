@@ -1,12 +1,13 @@
 #include "DungeonGenerator.h"
 #include "DrawDebugHelpers.h"
 
-void DungeonGenerator::Initialize(UWorld* InWorld)
+void FDungeonGenerator::Initialize(UWorld* InWorld)
 {
 	World = InWorld;
 }
 
-void DungeonGenerator::DrawDebugRect(const FRect& Rect, FColor Color = FColor::Transparent, const float LineThickness) const
+void FDungeonGenerator::DrawDebugRect(const FRect& Rect, FColor Color = FColor::Transparent,
+                                      const float LineThickness) const
 {
 	if (!World)
 	{
@@ -34,7 +35,8 @@ void DungeonGenerator::DrawDebugRect(const FRect& Rect, FColor Color = FColor::T
 	DrawLine(BottomLeft, TopLeft, Color, LineThickness);
 }
 
-void DungeonGenerator::DrawLine(const FVector& Start, const FVector& End, const FColor Color, const float Thickness) const
+void FDungeonGenerator::DrawLine(const FVector& Start, const FVector& End, const FColor Color,
+                                 const float Thickness) const
 {
 	DrawDebugLine(
 		World,

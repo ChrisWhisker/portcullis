@@ -101,7 +101,7 @@ FReply FPortcullisModule::OnButtonClick()
 	if (UWorld* World = GEditor->GetEditorWorldContext().World())
 	{
 		// Instantiate BSPGenerator with the current world context
-		BSPGenerator BSPGen;
+		FBSPGenerator BSPGen;
 		BSPGen.Initialize(World);
 
 		// Now you can call Generate or other functions as needed

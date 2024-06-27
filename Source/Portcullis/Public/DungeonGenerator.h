@@ -7,10 +7,10 @@
 /**
  *
  */
-class PORTCULLIS_API DungeonGenerator
+class PORTCULLIS_API FDungeonGenerator
 {
 public:
-	virtual ~DungeonGenerator() = default;
+	virtual ~FDungeonGenerator() = default;
 	virtual void Initialize(UWorld* InWorld);
 	virtual void Generate() = 0;
 

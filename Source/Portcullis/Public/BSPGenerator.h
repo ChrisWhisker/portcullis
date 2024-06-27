@@ -9,7 +9,7 @@
 /**
  *
  */
-class PORTCULLIS_API BSPGenerator final : public DungeonGenerator
+class PORTCULLIS_API FBSPGenerator final : public FDungeonGenerator
 {
 public:
 	virtual void Initialize(UWorld* InWorld) override;
