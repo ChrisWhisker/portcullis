@@ -96,8 +96,6 @@ TSharedRef<SDockTab> FPortcullisModule::OnSpawnPluginTab(const FSpawnTabArgs& Sp
 
 FReply FPortcullisModule::OnButtonClick()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Generate button was clicked!"));
-
 	if (UWorld* World = GEditor->GetEditorWorldContext().World())
 	{
 		// Instantiate BSPGenerator with the current world context

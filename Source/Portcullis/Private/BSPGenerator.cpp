@@ -73,6 +73,7 @@ void FBSPGenerator::DivideSpace(std::vector<FRect>& SubSpaces, const int Current
 		}
 	}
 	SubSpaces = NewSubSpaces;
+	// SubSpaces = std::move(NewSubSpaces);
 
 	DivideSpace(SubSpaces, CurrentDepth + 1, MaxDepth);
 }
@@ -83,12 +84,13 @@ void FBSPGenerator::CreateRooms(const std::vector<FRect>& SubSpaces)
 	{
 		// Randomize the room size with a margin and maximum size constraints
 		constexpr int32 RoomMargin = 10;
-		constexpr int32 MaxRoomSize = 1500;
+		const int32 MaxRoomWidth = FMath::RandRange(1500, 5000);
+		const int32 MaxRoomHeight = FMath::RandRange(1500, 5000);
 
-		const int32 RoomWidth = FMath::RandRange(FMath::Min(SubSpace.Width / 2, MaxRoomSize - RoomMargin),
-		                                         FMath::Min(SubSpace.Width - RoomMargin, MaxRoomSize));
-		const int32 RoomHeight = FMath::RandRange(FMath::Min(SubSpace.Height / 2, MaxRoomSize - RoomMargin),
-		                                          FMath::Min(SubSpace.Height - RoomMargin, MaxRoomSize));
+		const int32 RoomWidth = FMath::RandRange(FMath::Min(SubSpace.Width / 2, MaxRoomWidth - RoomMargin),
+		                                         FMath::Min(SubSpace.Width - RoomMargin, MaxRoomWidth));
+		const int32 RoomHeight = FMath::RandRange(FMath::Min(SubSpace.Height / 2, MaxRoomHeight - RoomMargin),
+		                                          FMath::Min(SubSpace.Height - RoomMargin, MaxRoomHeight));
 
 		const int32 RoomX = SubSpace.X + FMath::RandRange(0, SubSpace.Width - RoomWidth);
 		const int32 RoomY = SubSpace.Y + FMath::RandRange(0, SubSpace.Height - RoomHeight);

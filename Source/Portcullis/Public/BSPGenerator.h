@@ -17,6 +17,6 @@ public:
 
 private:
 	std::vector<FRect> Rooms;
-	static void DivideSpace(std::vector<FRect>& Spaces, int Depth, int MaxDepth);
-	void CreateRooms(const std::vector<FRect>& Spaces);
+	static void DivideSpace(std::vector<FRect>& SubSpaces, int CurrentDepth, int MaxDepth);
+	void CreateRooms(const std::vector<FRect>& SubSpaces);
 };
