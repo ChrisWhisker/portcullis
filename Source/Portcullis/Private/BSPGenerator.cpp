@@ -3,11 +3,6 @@
 #include <ctime>
 #include "DrawDebugHelpers.h"
 
-void FBSPGenerator::Initialize(UWorld* InWorld)
-{
-	FDungeonGenerator::Initialize(InWorld); // Call base class Initialize to set the World
-}
-
 void FBSPGenerator::Generate()
 {
 	if (!World)
@@ -29,7 +24,7 @@ void FBSPGenerator::Generate()
 
 	for (const auto& SubSpace : SubSpaces)
 	{
-		DrawDebugRect(SubSpace, FColor::Silver);
+		SubSpace.Draw(World, FColor::Silver);
 	}
 
 	// Create rooms in the divided spaces
@@ -44,12 +39,13 @@ void FBSPGenerator::DivideSpace(std::vector<FRect>& SubSpaces, const int Current
 
 	for (const auto& SubSpace : SubSpaces)
 	{
-		constexpr int MinSize = 300;
+		constexpr float MinSize = 300.f;
 		if (static_cast<bool>(std::rand() % 2)) // Divide horizontally
 		{
 			if (SubSpace.Height > MinSize * 2) // Skip division if resulting spaces would be too small
 			{
-				const int SplitLine = SubSpace.Y + MinSize + std::rand() % (SubSpace.Height - MinSize * 2);
+				const int IntHeight = static_cast<int>(SubSpace.Height - MinSize * 2);
+				const float SplitLine = SubSpace.Y + MinSize + std::rand() % IntHeight;
 				NewSubSpaces.push_back({SubSpace.X, SubSpace.Y, SubSpace.Width, SplitLine - SubSpace.Y});
 				NewSubSpaces.push_back(
 					{SubSpace.X, SplitLine, SubSpace.Width, SubSpace.Y + SubSpace.Height - SplitLine});
@@ -63,7 +59,8 @@ void FBSPGenerator::DivideSpace(std::vector<FRect>& SubSpaces, const int Current
 		{
 			if (SubSpace.Width > MinSize * 2) // Skip division if resulting spaces would be too small
 			{
-				const int SplitLine = SubSpace.X + MinSize + std::rand() % (SubSpace.Width - MinSize * 2);
+				const int IntWidth = static_cast<int>(SubSpace.Width - MinSize * 2);
+				const float SplitLine = SubSpace.X + MinSize + std::rand() % IntWidth;
 				NewSubSpaces.push_back({SubSpace.X, SubSpace.Y, SplitLine - SubSpace.X, SubSpace.Height});
 				NewSubSpaces.push_back(
 					{SplitLine, SubSpace.Y, SubSpace.X + SubSpace.Width - SplitLine, SubSpace.Height});
@@ -79,23 +76,24 @@ void FBSPGenerator::DivideSpace(std::vector<FRect>& SubSpaces, const int Current
 	DivideSpace(SubSpaces, CurrentDepth + 1, MaxDepth);
 }
 
+
 void FBSPGenerator::CreateRooms(const std::vector<FRect>& SubSpaces)
 {
 	for (const auto& SubSpace : SubSpaces)
 	{
-		constexpr int32 RoomMargin = 10;
-		const int32 MaxWidth = FMath::Min(SubSpace.Width - RoomMargin, FMath::RandRange(1500, 5000));
-		const int32 MaxHeight = FMath::Min(SubSpace.Height - RoomMargin, FMath::RandRange(1500, 5000));
+		constexpr float RoomMargin = 10;
+		const float MaxWidth = FMath::Min(SubSpace.Width - RoomMargin, FMath::RandRange(1500.0f, 5000.0f));
+		const float MaxHeight = FMath::Min(SubSpace.Height - RoomMargin, FMath::RandRange(1500.0f, 5000.0f));
 
-		const int32 RoomWidth = FMath::RandRange(MaxWidth / 2, MaxWidth);
-		const int32 RoomHeight = FMath::RandRange(MaxHeight / 2, MaxHeight);
+		const float RoomWidth = FMath::RandRange(MaxWidth / 2.0f, MaxWidth);
+		const float RoomHeight = FMath::RandRange(MaxHeight / 2.0f, MaxHeight);
 
-		const int32 RoomX = SubSpace.X + FMath::RandRange(0, SubSpace.Width - RoomWidth);
-		const int32 RoomY = SubSpace.Y + FMath::RandRange(0, SubSpace.Height - RoomHeight);
+		const float RoomX = SubSpace.X + FMath::RandRange(0.0f, SubSpace.Width - RoomWidth);
+		const float RoomY = SubSpace.Y + FMath::RandRange(0.0f, SubSpace.Height - RoomHeight);
 
 		FRect Room(RoomX, RoomY, RoomWidth, RoomHeight);
 		Rooms.push_back(Room);
 
-		DrawDebugRect(Room, FColor::Magenta, 30);
+		Room.Draw(World, FColor::Magenta, 30.0f);
 	}
 }

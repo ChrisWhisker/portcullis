@@ -1,11 +1,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Rect.h"
 #include "Engine/World.h"
 
 /**
- *
+ * Interface for dungeon generation algorithms
  */
 class PORTCULLIS_API FDungeonGenerator
 {
@@ -16,6 +15,4 @@ public:
 
 protected:
 	UWorld* World = nullptr;
-	void DrawDebugRect(const FRect& Rect, FColor Color, float LineThickness = 10) const;
-	void DrawLine(const FVector& Start, const FVector& End, const FColor Color, const float Thickness = 10) const;
 };

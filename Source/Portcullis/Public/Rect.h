@@ -5,10 +5,16 @@
 struct PORTCULLIS_API FRect
 {
 public:
-	int32 X, Y, Width, Height;
+	float X, Y, Width, Height;
 
-	FRect(const int32 InX, const int32 InY, const int32 InWidth, const int32 InHeight)
+	FRect(const float InX, const float InY, const float InWidth, const float InHeight)
 		: X(InX), Y(InY), Width(InWidth), Height(InHeight)
 	{
 	}
+
+	void Draw(const UWorld* World, FColor Color = FColor::Transparent, float LineThickness = 10.f) const;
+
+private:
+	static void DrawLine(const UWorld* World, const FVector& Start, const FVector& End, FColor Color,
+	                     float Thickness = 10.f);
 };

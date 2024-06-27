@@ -7,16 +7,16 @@
 #include "Engine/World.h"
 
 /**
- *
+ * Generates a randomized dungeon using the Binary Space Partitioning (BSP) algorithm.
  */
 class PORTCULLIS_API FBSPGenerator final : public FDungeonGenerator
 {
 public:
-	virtual void Initialize(UWorld* InWorld) override;
 	virtual void Generate() override;
 
 private:
 	std::vector<FRect> Rooms;
+	std::vector<FRect> Corridors;
 	static void DivideSpace(std::vector<FRect>& SubSpaces, int CurrentDepth, int MaxDepth);
 	void CreateRooms(const std::vector<FRect>& SubSpaces);
 };
