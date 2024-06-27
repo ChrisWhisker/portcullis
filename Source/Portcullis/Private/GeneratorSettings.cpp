@@ -1,0 +1,1 @@
+#include "GeneratorSettings.h"

@@ -82,17 +82,75 @@ TSharedRef<SDockTab> FPortcullisModule::OnSpawnPluginTab(const FSpawnTabArgs& Sp
 	return SNew(SDockTab)
 		.TabRole(ETabRole::NomadTab)
 		[
-			// Put your tab content here!
-			SNew(SBox)
-            .HAlign(HAlign_Center)
-            .VAlign(VAlign_Center)
+			SNew(SVerticalBox)
+			+ SVerticalBox::Slot()
+			  .AutoHeight()
+			  .Padding(5)
+			[
+				SNew(SHorizontalBox)
+				+ SHorizontalBox::Slot()
+				  .AutoWidth()
+				  .VAlign(VAlign_Center)
+				[
+					SNew(SCheckBox)
+					.OnCheckStateChanged_Raw(this, &FPortcullisModule::OnShowPartitionsChanged)
+					// .IsChecked(this, &FPortcullisModule::GetShowPartitionsChecked)
+					.Content()
+					[
+						SNew(STextBlock)
+						.Text(LOCTEXT("ShowPartitionsLabel", "Show partitions"))
+					]
+				]
+			]
+			+ SVerticalBox::Slot()
+			  .AutoHeight()
+			  .Padding(5)
+			[
+				SNew(SHorizontalBox)
+				+ SHorizontalBox::Slot()
+				  .AutoWidth()
+				  .VAlign(VAlign_Center)
+				[
+					SNew(SCheckBox)
+					.OnCheckStateChanged_Raw(this, &FPortcullisModule::OnShowRoomsChanged)
+					// .IsChecked(this, &FPortcullisModule::GetShowRoomsChecked)
+					.Content()
+					[
+						SNew(STextBlock)
+						.Text(LOCTEXT("ShowRoomsLabel", "Show rooms"))
+					]
+				]
+			]
+			+ SVerticalBox::Slot()
+			  .HAlign(HAlign_Center)
+			  .VAlign(VAlign_Center)
 			[
 				SNew(SButton)
-	            .Text(LOCTEXT("MyButtonLabel", "Generate"))
-	            .OnClicked_Raw(this, &FPortcullisModule::OnButtonClick) // Bind the button click event
+				.Text(LOCTEXT("MyButtonLabel", "Generate"))
+				.OnClicked_Raw(this, &FPortcullisModule::OnButtonClick) // Bind the button click event
 			]
 		];
 }
+
+void FPortcullisModule::OnShowPartitionsChanged(const ECheckBoxState NewState)
+{
+	Settings.bDrawPartitions = (NewState == ECheckBoxState::Checked);
+}
+
+void FPortcullisModule::OnShowRoomsChanged(const ECheckBoxState NewState)
+{
+	Settings.bDrawRooms = (NewState == ECheckBoxState::Checked);
+}
+
+// ECheckBoxState FPortcullisModule::GetShowPartitionsChecked() const
+// {
+// 	return Settings.bDrawPartitions ? ECheckBoxState::Checked : ECheckBoxState::Unchecked;
+// }
+//
+// ECheckBoxState FPortcullisModule::GetShowRoomsChecked() const
+// {
+// 	return Settings.bDrawRooms ? ECheckBoxState::Checked : ECheckBoxState::Unchecked;
+// }
 
 FReply FPortcullisModule::OnButtonClick()
 {
@@ -103,7 +161,7 @@ FReply FPortcullisModule::OnButtonClick()
 		BSPGen.Initialize(World);
 
 		// Now you can call Generate or other functions as needed
-		BSPGen.Generate();
+		BSPGen.Generate(Settings);
 	}
 	else
 	{

@@ -2,8 +2,9 @@
 #include <cstdlib>
 #include <ctime>
 #include "DrawDebugHelpers.h"
+#include "GeneratorSettings.h"
 
-void FBSPGenerator::Generate()
+void FBSPGenerator::Generate(const FGeneratorSettings Settings)
 {
 	if (!World)
 	{
@@ -22,13 +23,16 @@ void FBSPGenerator::Generate()
 	constexpr int MaxDepth = 4;
 	DivideSpace(SubSpaces, 0, MaxDepth);
 
-	for (const auto& SubSpace : SubSpaces)
+	if (Settings.bDrawPartitions)
 	{
-		SubSpace.Draw(World, FColor::Silver);
+		for (const auto& SubSpace : SubSpaces)
+		{
+			SubSpace.Draw(World, FColor::Silver);
+		}
 	}
 
 	// Create rooms in the divided spaces
-	CreateRooms(SubSpaces);
+	CreateRooms(SubSpaces, Settings);
 }
 
 void FBSPGenerator::DivideSpace(std::vector<FRect>& SubSpaces, const int CurrentDepth, const int MaxDepth)
@@ -77,7 +81,7 @@ void FBSPGenerator::DivideSpace(std::vector<FRect>& SubSpaces, const int Current
 }
 
 
-void FBSPGenerator::CreateRooms(const std::vector<FRect>& SubSpaces)
+void FBSPGenerator::CreateRooms(const std::vector<FRect>& SubSpaces, const FGeneratorSettings Settings)
 {
 	for (const auto& SubSpace : SubSpaces)
 	{
@@ -94,6 +98,9 @@ void FBSPGenerator::CreateRooms(const std::vector<FRect>& SubSpaces)
 		FRect Room(RoomX, RoomY, RoomWidth, RoomHeight);
 		Rooms.push_back(Room);
 
-		Room.Draw(World, FColor::Magenta, 30.0f);
+		if (Settings.bDrawRooms)
+		{
+			Room.Draw(World, FColor::Magenta, 30.0f);
+		}
 	}
 }

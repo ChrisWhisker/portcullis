@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GeneratorSettings.h"
 #include "Modules/ModuleManager.h"
 
 class FToolBarBuilder;
@@ -28,4 +29,18 @@ private:
 	FReply OnButtonClick();
 
 	TSharedPtr<class FUICommandList> PluginCommands;
+
+	/** Callback for checkbox state change event for "Show partitions". */
+	void OnShowPartitionsChanged(const ECheckBoxState NewState);
+
+	/** Callback for checkbox state change event for "Show rooms". */
+	void OnShowRoomsChanged(const ECheckBoxState NewState);
+
+	// /** Returns the checked state of the "Show rooms" checkbox. */
+	// ECheckBoxState GetShowPartitionsChecked() const;
+	//
+	// /** Returns the checked state of the "Show rooms" checkbox. */
+	// ECheckBoxState GetShowRoomsChecked() const;
+
+	FGeneratorSettings Settings;
 };
