@@ -6,7 +6,7 @@ void DungeonGenerator::Initialize(UWorld* InWorld)
 	World = InWorld;
 }
 
-void DungeonGenerator::DrawDebugRect(const FRect& Rect, FColor Color = FColor::Transparent) const
+void DungeonGenerator::DrawDebugRect(const FRect& Rect, FColor Color = FColor::Transparent, const float LineThickness) const
 {
 	if (!World)
 	{
@@ -28,13 +28,13 @@ void DungeonGenerator::DrawDebugRect(const FRect& Rect, FColor Color = FColor::T
 	{
 		Color = Color.MakeRandomColor();
 	}
-	DrawLine(TopLeft, TopRight, Color);
-	DrawLine(TopRight, BottomRight, Color);
-	DrawLine(BottomRight, BottomLeft, Color);
-	DrawLine(BottomLeft, TopLeft, Color);
+	DrawLine(TopLeft, TopRight, Color, LineThickness);
+	DrawLine(TopRight, BottomRight, Color, LineThickness);
+	DrawLine(BottomRight, BottomLeft, Color, LineThickness);
+	DrawLine(BottomLeft, TopLeft, Color, LineThickness);
 }
 
-void DungeonGenerator::DrawLine(const FVector& Start, const FVector& End, const FColor Color) const
+void DungeonGenerator::DrawLine(const FVector& Start, const FVector& End, const FColor Color, const float Thickness) const
 {
 	DrawDebugLine(
 		World,
@@ -42,6 +42,6 @@ void DungeonGenerator::DrawLine(const FVector& Start, const FVector& End, const 
 		End,
 		Color,
 		true, 0, 0,
-		10.0f
+		Thickness
 	);
 }

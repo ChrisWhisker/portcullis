@@ -87,10 +87,15 @@ void BSPGenerator::CreateRooms(const std::vector<FRect>& Spaces)
 {
 	for (const auto& Space : Spaces)
 	{
-		// Randomize the room size with a margin
+		// Randomize the room size with a margin and maximum size constraints
 		constexpr int32 RoomMargin = 10;
-		const int32 RoomWidth = FMath::RandRange(Space.Width / 2, Space.Width - RoomMargin);
-		const int32 RoomHeight = FMath::RandRange(Space.Height / 2, Space.Height - RoomMargin);
+		const int32 MaxRoomWidth = FMath::RandRange(1500,5000);
+		const int32 MaxRoomHeight = FMath::RandRange(1500,5000);
+
+		const int32 RoomWidth = FMath::RandRange(FMath::Min(Space.Width / 2, MaxRoomWidth - RoomMargin),
+		                                         FMath::Min(Space.Width - RoomMargin, MaxRoomWidth));
+		const int32 RoomHeight = FMath::RandRange(FMath::Min(Space.Height / 2, MaxRoomHeight - RoomMargin),
+		                                          FMath::Min(Space.Height - RoomMargin, MaxRoomHeight));
 
 		const int32 RoomX = Space.X + FMath::RandRange(0, Space.Width - RoomWidth);
 		const int32 RoomY = Space.Y + FMath::RandRange(0, Space.Height - RoomHeight);
@@ -98,6 +103,6 @@ void BSPGenerator::CreateRooms(const std::vector<FRect>& Spaces)
 		FRect Room(RoomX, RoomY, RoomWidth, RoomHeight);
 		Rooms.push_back(Room);
 
-		DrawDebugRect(Room, FColor::Magenta);
+		DrawDebugRect(Room, FColor::Magenta, 30);
 	}
 }
