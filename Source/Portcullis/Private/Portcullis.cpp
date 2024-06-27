@@ -94,7 +94,6 @@ TSharedRef<SDockTab> FPortcullisModule::OnSpawnPluginTab(const FSpawnTabArgs& Sp
 				[
 					SNew(SCheckBox)
 					.OnCheckStateChanged_Raw(this, &FPortcullisModule::OnShowPartitionsChanged)
-					// .IsChecked(this, &FPortcullisModule::GetShowPartitionsChecked)
 					.Content()
 					[
 						SNew(STextBlock)
@@ -113,7 +112,6 @@ TSharedRef<SDockTab> FPortcullisModule::OnSpawnPluginTab(const FSpawnTabArgs& Sp
 				[
 					SNew(SCheckBox)
 					.OnCheckStateChanged_Raw(this, &FPortcullisModule::OnShowRoomsChanged)
-					// .IsChecked(this, &FPortcullisModule::GetShowRoomsChecked)
 					.Content()
 					[
 						SNew(STextBlock)
@@ -141,16 +139,6 @@ void FPortcullisModule::OnShowRoomsChanged(const ECheckBoxState NewState)
 {
 	Settings.bDrawRooms = (NewState == ECheckBoxState::Checked);
 }
-
-// ECheckBoxState FPortcullisModule::GetShowPartitionsChecked() const
-// {
-// 	return Settings.bDrawPartitions ? ECheckBoxState::Checked : ECheckBoxState::Unchecked;
-// }
-//
-// ECheckBoxState FPortcullisModule::GetShowRoomsChecked() const
-// {
-// 	return Settings.bDrawRooms ? ECheckBoxState::Checked : ECheckBoxState::Unchecked;
-// }
 
 FReply FPortcullisModule::OnButtonClick()
 {

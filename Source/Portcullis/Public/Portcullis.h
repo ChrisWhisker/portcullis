@@ -36,11 +36,5 @@ private:
 	/** Callback for checkbox state change event for "Show rooms". */
 	void OnShowRoomsChanged(const ECheckBoxState NewState);
 
-	// /** Returns the checked state of the "Show rooms" checkbox. */
-	// ECheckBoxState GetShowPartitionsChecked() const;
-	//
-	// /** Returns the checked state of the "Show rooms" checkbox. */
-	// ECheckBoxState GetShowRoomsChecked() const;
-
 	FGeneratorSettings Settings;
 };
