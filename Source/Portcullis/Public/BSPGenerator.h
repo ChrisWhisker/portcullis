@@ -20,4 +20,5 @@ private:
 	std::vector<FRect> Corridors;
 	static void DivideSpace(std::vector<FRect>& SubSpaces, int CurrentDepth, int MaxDepth);
 	void CreateRooms(const std::vector<FRect>& SubSpaces, const FGeneratorSettings Settings);
+	void ConnectRooms();
 };
