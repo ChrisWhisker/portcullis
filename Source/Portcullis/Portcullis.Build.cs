@@ -43,6 +43,7 @@ public class Portcullis : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
+				"BSPUtils",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

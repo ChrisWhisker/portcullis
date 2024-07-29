@@ -16,6 +16,9 @@ void FBSPGenerator::Generate(const FGeneratorSettings Settings)
 
 	// Define the initial space
 	const FRect InitialSpace = {0, 0, 10000, 10000};
+
+	// TODO Create additive brush for the walls
+
 	std::vector<FRect> SubSpaces = {InitialSpace}; // Use initializer list to initialize the vector
 
 	// Recursively divide the space to a certain depth
@@ -113,10 +116,7 @@ void FBSPGenerator::CreateRooms(const std::vector<FRect>& SubSpaces, const FGene
 		FRect Room(RoomX, RoomY, RoomWidth, RoomHeight);
 		Rooms.push_back(Room);
 
-		if (Settings.bDrawRooms)
-		{
-			Room.Draw(World, FColor::Magenta, 30.0f);
-		}
+		Room.Carve(World);
 	}
 }
 
@@ -175,14 +175,18 @@ void FBSPGenerator::ConnectRooms()
 			const float CorridorHeight = CorridorWidth;
 			const float CorridorLength = FMath::Abs(End.X - Start.X);
 
-			Corridors.push_back(FRect(FMath::Min(Start.X, End.X), CorridorY, CorridorLength, CorridorHeight));
+			FRect Horizontal = FRect(FMath::Min(Start.X, End.X), CorridorY, CorridorLength, CorridorHeight);
+			Corridors.push_back(Horizontal);
+			Horizontal.Carve(World);
 
 			const float CorridorX = End.X - CorridorWidth / 2.0f;
 			const float CorridorWidthVertical = CorridorWidth;
 			const float CorridorHeightVertical = FMath::Abs(End.Y - Start.Y);
 
-			Corridors.push_back(FRect(CorridorX, FMath::Min(Start.Y, End.Y), CorridorWidthVertical,
-			                          CorridorHeightVertical));
+			FRect Vertical = FRect(CorridorX, FMath::Min(Start.Y, End.Y), CorridorWidthVertical,
+			                       CorridorHeightVertical);
+			Corridors.push_back(Vertical);
+			Vertical.Carve(World);
 		}
 		else
 		{
@@ -191,14 +195,18 @@ void FBSPGenerator::ConnectRooms()
 			const float CorridorWidthVertical = CorridorWidth;
 			const float CorridorHeightVertical = FMath::Abs(End.Y - Start.Y);
 
-			Corridors.push_back(FRect(CorridorX, FMath::Min(Start.Y, End.Y), CorridorWidthVertical,
-			                          CorridorHeightVertical));
+			FRect Vertical = FRect(CorridorX, FMath::Min(Start.Y, End.Y), CorridorWidthVertical,
+			                       CorridorHeightVertical);
+			Corridors.push_back(Vertical);
+			Vertical.Carve(World);
 
 			const float CorridorY = End.Y - CorridorWidth / 2.0f;
 			const float CorridorHeight = CorridorWidth;
 			const float CorridorLength = FMath::Abs(End.X - Start.X);
 
-			Corridors.push_back(FRect(FMath::Min(Start.X, End.X), CorridorY, CorridorLength, CorridorHeight));
+			FRect Horizontal = FRect(FMath::Min(Start.X, End.X), CorridorY, CorridorLength, CorridorHeight);
+			Corridors.push_back(Horizontal);
+			Horizontal.Carve(World);
 		}
 	}
 }
